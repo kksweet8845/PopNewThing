@@ -1,6 +1,5 @@
 import express from 'express'
 import config from 'projectRoot/config.js'
-import forge from 'node-forge'
 import fs from 'fs'
 import crypto from 'crypto'
 import {middleware} from '@line/bot-sdk'

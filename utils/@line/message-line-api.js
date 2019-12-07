@@ -1,4 +1,4 @@
-import {POST} from 'projectRoot/utils/@line/request.js'
+import {POST} from 'projectRoot/utils/request.js'
 import config from 'projectRoot/config.js'
 
 
