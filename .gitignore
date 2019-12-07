@@ -1,0 +1,17 @@
+# config
+config.js
+
+# env
+.env
+
+#data
+mongodb-data/*
+
+
+# Dependency directories
+node_modules/
+
+.vscode
+key/*
+.well-known/*
+bin/*

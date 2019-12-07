@@ -1,0 +1,8 @@
+{
+    "signal": "SIGTERM",
+    "watch": [ "bin/server.bundle.js", "package.json" ],
+    "ignore": [ ".git/", "node_modules/", "static/" ],
+    "ext": "js,json",
+    "events": {
+    }
+}
