@@ -2,7 +2,6 @@
   "name": "ct_charbot",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
   "scripts": {
     "develop": "cross-env NODE_ENV=development npm-run-all --parallel watch nodemon",
     "build:server-js": "cross-env NODE_ENV=development webpack --config webpack.server.config.js",
