@@ -1,0 +1,20 @@
+onst path = require('path')
+
+const config = {
+    'server': {
+        'domain' : 'localhost',
+        'port' : 3000,
+        'secret' : 'deepest and datkest secret',
+    },
+    'line': {
+        'channelSecret' : '',
+        'channelAccessToken' : ''
+    },
+    'agent': {
+        'hostname' : 'api.line.me',
+        'auth' : `Bearer ${config.line.channelAccessToken}`
+    },
+    'projectRoot' : ''
+}
+
+module.exports = config
