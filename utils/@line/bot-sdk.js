@@ -1,6 +1,8 @@
 import https from 'https'
 import config from 'projectRoot/config.js'
-import {_replyMessage} from 'projectRoot/utils/@line/message-line-api.js'
+import {_replyMessage,
+        _getMessageContent
+} from 'projectRoot/utils/@line/message-line-api.js'
 import path from 'path'
 
 
@@ -19,7 +21,17 @@ class Client {
             console.log(err)
         }
     }
+
+    async getMessageContent(messageId) {
+        try {
+            return _getMessageContent(messageId, this.keepAliveAgent)
+        }catch(err){
+            console.log(err)
+        }
+    }
 }
+
+
 
 export {
     Client

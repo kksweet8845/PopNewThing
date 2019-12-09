@@ -1,8 +1,8 @@
-import {POST} from 'projectRoot/utils/request.js'
+import {POST, GET} from 'projectRoot/utils/request.js'
 import config from 'projectRoot/config.js'
+import path from 'path'
 
-
-
+const msg_path = '/v2/bot/message/'
 const header_h = (type, auth) => {
     return {
         'Content-Type': type,
@@ -10,7 +10,7 @@ const header_h = (type, auth) => {
     }
 }
 
-const _replyMessage = (replyToken, msg, agent, path, note) => {
+const _replyMessage = async (replyToken, msg, agent, path, note) => {
     try {
         if(!(msg instanceof Array)){
             const err = new Error('The messages is not array')
@@ -36,9 +36,23 @@ const _replyMessage = (replyToken, msg, agent, path, note) => {
     }
 }
 
-
+const _getMessageContent = (messageId, agent) => {
+    try{
+        return GET({
+            hostname : config.agent.get_content,
+            path : path.join(msg_path, messageId, 'content'),
+            headers : {
+                'Authorization' : config.agent.auth
+            },
+            agent : agent
+        })
+    }catch(err){
+        console.log(err)
+    }
+}
 
 export {
     _replyMessage,
+    _getMessageContent,
 }
 

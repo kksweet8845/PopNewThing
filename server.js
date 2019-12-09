@@ -6,7 +6,7 @@ import {middleware} from '@line/bot-sdk'
 import https from 'https'
 import {Client} from 'projectRoot/utils/@line/bot-sdk.js'
 import { AssertionError } from 'assert'
-
+import lineApp from 'projectRoot/line-service/app.js'
 
 
 const app = express()
@@ -36,47 +36,43 @@ app.use(express.urlencoded({
 
 
 
-app.use((req, res, next)=>{
-    const hash = crypto.createHmac('SHA256', config.line.channelSecret)
-                .update(Buffer.from(JSON.stringify(req.body)).toString('utf-8'))
-                .digest('base64')
-    if(hash !== req.headers['x-line-signature']){
-        const err = new Error('Not trusted signature')
-        err.status = 400
-        next(err)
-    }
-    next()
-})
-
-app.get('/', (req, res)=> {
-    console.log(req)
-    res.send('I got the goddamn thing')
-})
+// app.use((req, res, next)=>{
+//     const hash = crypto.createHmac('SHA256', config.line.channelSecret)
+//                 .update(Buffer.from(JSON.stringify(req.body)).toString('utf-8'))
+//                 .digest('base64')
+//     if(hash !== req.headers['x-line-signature']){
+//         const err = new Error('Not trusted signature')
+//         err.status = 400
+//         next(err)
+//     }
+//     next()
+// })
 
 
+app.use('/line', lineApp)
 
-app.post('/', (req, res) => {
-    Promise
-    .all(req.body.events.map(handleEvent))
-    .then((result) => res.json(result))
-    .catch((err) => {
-      console.error(err);
-      res.status(500).end();
-    })
-})
+// app.post('/', (req, res) => {
+//     Promise
+//     .all(req.body.events.map(handleEvent))
+//     .then((result) => res.json(result))
+//     .catch((err) => {
+//       console.error(err);
+//       res.status(500).end();
+//     })
+// })
 
-function handleEvent(event){
-    if (event.type !== 'message' || event.message.type !== 'text') {
-        // ignore non-text-message event
-        return Promise.resolve(null);
-      }
-      // create a echoing text message
-      const line_echo = [{
-          type : 'text',
-          text : event.message.text
-      }]
-      return client.replyMessage(event.replyToken, line_echo);
-}
+// function handleEvent(event){
+//     if (event.type !== 'message' || event.message.type !== 'text') {
+//         // ignore non-text-message event
+//         return Promise.resolve(null);
+//       }
+//       // create a echoing text message
+//       const line_echo = [{
+//           type : 'text',
+//           text : event.message.text
+//       }]
+//       return client.replyMessage(event.replyToken, line_echo);
+// }
 
 
 

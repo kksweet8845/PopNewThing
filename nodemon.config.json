@@ -1,6 +1,6 @@
 {
     "signal": "SIGTERM",
-    "watch": [ "bin/server.bundle.js", "package.json" ],
+    "watch": [ "bin/fsm.bundle.js", "package.json" , "bin/server.bundle.js"],
     "ignore": [ ".git/", "node_modules/", "static/" ],
     "ext": "js,json",
     "events": {

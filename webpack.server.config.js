@@ -26,7 +26,8 @@
      externals : [nodeExternals(), ],
      resolve: {
          alias: {
-             'projectRoot' : config.projectRoot
+             'projectRoot' : config.projectRoot,
+             'utils' : path.join(config.projectRoot, 'utils')
          },
      },
      module : {

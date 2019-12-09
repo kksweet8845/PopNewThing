@@ -1,0 +1,10 @@
+config={
+    'mongodb': {
+        'database': 'line bot',
+        'host' : 'localhost:27017',
+        'password' : '',
+        'user' : ''
+    }
+}
+
+export default config
