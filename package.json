@@ -18,6 +18,7 @@
     "t": "cross-env NODE_ENV=development npm-run-all --parallel watch:test-js nodemon:test-js",
     "to": "cross-env NODE_ENV=development npm-run-all --parallel build:open-test-js watch:open-test-js nodemon:open-test-js",
     "p": "cp config.js.default config.js",
+    "pdb" : "cp db/config.js.default db/config.js",
     "watch:fsm-js": "webpack --watch --config webpack.fsm.config.js",
     "nodemon:fsm-js": "cross-env NODE_ENV=development nodemon --config nodemon.config.json bin/fsm.bundle.js",
     "f": "cross-env NODE_ENV=development npm-run-all --parallel watch:fsm-js nodemon:fsm-js"

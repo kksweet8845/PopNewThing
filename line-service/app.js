@@ -13,8 +13,6 @@ import fs from 'fs'
 const app = express()
 const lineBot = new LineBot(paperMachine)
 
-const client = new Client(config.line)
-
 app.post(middleware(config.line))
 app.use(express.json())
 /* Based on body-parser*/

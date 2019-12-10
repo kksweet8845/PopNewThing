@@ -1,7 +1,7 @@
 import paperMachine from 'utils/@paper-fsm/fsm.js'
 import {interpret, State} from 'xstate'
 import {Client} from 'projectRoot/utils/@line/bot-sdk.js'
-import {_msgEvent, _followEvent} from 'utils/@handleEvent/line-eh.js'
+import {_msgEvent, _followEvent, _unfollowEvent} from 'utils/@handleEvent/line-eh.js'
 
 const isMessage = (str) => {
     return str !== 'message'
@@ -30,6 +30,9 @@ class LineBot {
         return _followEvent(that, event)
     }
 
+    async unfollowEvent(event) {
+        return _unfollowEvent(event)
+    }
     async handleEvent(event) {
         // console.log(this)
         switch(event.type){
@@ -37,6 +40,8 @@ class LineBot {
                 return this.msgEvent(event)
             case 'follow':
                 return this.followEvent(event)
+            case 'unfollow':
+                return this.unfollowEvent(event)
             case 'image':
                 break
             default :

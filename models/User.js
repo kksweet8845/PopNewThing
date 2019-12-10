@@ -1,5 +1,5 @@
 import mongoose from 'mongoose'
-
+import {FavoriteSchema} from 'projectRoot/models/Favorite.js'
 const UserSchema = new mongoose.Schema({
     userId:{
         type: String,
@@ -10,7 +10,8 @@ const UserSchema = new mongoose.Schema({
         type: String,
         maxlength: 5000,
         default: ''
-    }
+    },
+    favorite : [String]
 })
 
 

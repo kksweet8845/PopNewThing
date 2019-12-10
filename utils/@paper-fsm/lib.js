@@ -16,9 +16,10 @@ import {
 } from 'utils/@openAI/lib.js'
 import {Builder, By, Key, unitl} from 'selenium-webdriver'
 import {User} from 'projectRoot/models/User.js'
+import {Favorite} from 'projectRoot/models/Favorite.js'
 import {mongoose} from 'projectRoot/db/mongoose.js'
 import config from 'projectRoot/config.js'
-import {State} from 'xstate'
+import {State, doneInvoke} from 'xstate'
 import path from 'path'
 
 
@@ -70,7 +71,7 @@ const _tryToRegister = async (obj={
         console.log(doc)
         const res = await client.replyMessage(replyToken, toArray({
             type :'text',
-            text : 'Your register is successed\nYou can type \"START\" by activating this service'
+            text : 'Your register is successed\nYou can type \"LOBBY\"'
         }))
         if(res.status == 200){
             return 'SUCCESS'
@@ -150,6 +151,11 @@ const _searchPaper = async (obj={
                             type : 'uri',
                             label : 'View detail',
                             uri : `${config.google.hostname}${href}`
+                        },
+                        {
+                            type : 'message',
+                            label : 'Add to Favorite',
+                            text : `FAVORITE ${config.google.hostname}${href}`
                         }
                     ]
                 }
@@ -171,6 +177,11 @@ const _searchPaper = async (obj={
                                 type : 'uri',
                                 label : 'View detail',
                                 uri : `${config.openAI.hostname}${href}`
+                            },
+                            {
+                                type : 'message',
+                                label : 'Add to Favorite',
+                                text : `FAVORITE ${config.openAI.hostname}${href}`
                             }
                         ]
                     }
@@ -233,7 +244,7 @@ const _chooseYear = async (obj={
 }
 
 
-const _chooseAI = (obj={
+const _chooseAI = async (obj={
     replyToken,
     client,
     userId,
@@ -257,6 +268,37 @@ const _chooseAI = (obj={
     }
 }
 
+
+const _addToFavorite = async ({
+    replyToken,
+    client,
+    userId,
+    url,
+}) => {
+    try{
+        const doc = await User.findOne({
+            userId,
+        })
+        if(doc){
+            var t = doc.favorite.find(ele => (ele === url))
+            if(t === undefined )
+                doc.favorite.push(url)
+            var pdoc = await doc.save()
+            return client.replyMessage(replyToken, toArray({
+                type : 'text',
+                text : `Add to favorite`
+            }), false)
+        }else {
+            return client.replyMessage(replyToken, toArray({
+                type : 'text',
+                text : 'Faild to adding to favorite'
+            }), false)
+        }
+    }catch(err){
+        console.log(err)
+    }
+}
+
 const _getResolveState = (machine, str) => {
     const stateDefinition = JSON.parse(str)
     const preState = State.create(stateDefinition)
@@ -264,6 +306,54 @@ const _getResolveState = (machine, str) => {
     return resolvedState
 }
 
+
+const _retrieveFavorite = async ({
+    replyToken,
+    client,
+    userId,
+})=> {
+    try{
+        const doc = await User.findOne({
+            userId,
+        })
+        if(doc){
+            var favorite = doc.favorite
+
+            var preData = favorite.map((url)=> {
+                return {
+                    text : url,
+                    actions : [
+                        {
+                            type : 'uri',
+                            label : 'View detail',
+                            uri : url
+                        }
+                    ]
+                }
+            })
+            console.log(preData)
+            return client.replyMessage(replyToken, toArray(createCarouselT({columns : preData.slice(0, 10)})), false)
+        }
+    }catch(err){
+        console.log(err)
+    }
+}
+
+
+const _helpInfo = async ({
+    replyToken,
+    client,
+    meta
+}) => {
+    try{
+        return client.replyMessage(replyToken, toArray({
+            type: 'text',
+            text : meta.info
+        }),false)
+    }catch(err){
+        console.log(err)
+    }
+}
 
 
 export {
@@ -275,4 +365,7 @@ export {
     _searchPaper,
     _chooseYear,
     _chooseAI,
+    _helpInfo,
+    _addToFavorite,
+    _retrieveFavorite,
 }

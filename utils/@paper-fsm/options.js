@@ -6,8 +6,11 @@ import {
     _searchPaper,
     _chooseAI,
     _chooseYear,
+    _helpInfo,
+    _addToFavorite,
+    _retrieveFavorite,
 } from 'utils/@paper-fsm/lib.js'
-import {assign} from 'xstate'
+import {assign, send} from 'xstate'
 
 const options = {
     actions : {
@@ -18,6 +21,9 @@ const options = {
         },
         infoDes   : (context, event, actState) => {
             return _infoDes(event.replyToken, event.client, actState.state.meta[`paperMachine.${actState.state.value}`])
+        },
+        helpInfo  : (context, event, actState) => {
+            return _helpInfo(event.replyToken, event.client, actState.state.meta[`paperMachine.${actState.state.value}`])
         },
         tryToRegister : async (context, event, actState) => {
             if(event.client){
@@ -85,19 +91,31 @@ const options = {
                 meta       : actState.state.meta[`paperMachine.${key}.${value}`],
             })
         },
+        showFSM : (context, event) => {
+            return event.client.replyMessage(event.event.replyToken, [{
+                type : 'image',
+                originalContentUrl : 'https://i.imgur.com/CQvm3Wh.png',
+                previewImageUrl : 'https://img.icons8.com/officel/80/000000/slot-machine.png',
+            }])
+        },
         addToFavorite : (context, event) => {
             console.log('Add to favorite')
             console.log(event)
+            return _addToFavorite({
+                replyToken : event.event.replyToken,
+                client     : event.client,
+                userId     : event.event.source.userId,
+                url        : event.url
+            })
         },
         retrieveFavorite : (context, event) => {
             console.log('Retrieve favrotes')
             console.log(event)
-        },
-        toggleNote : (context, event) => {
-            console.log(`toggle notificationDisabled : ${context.notificationDisabled}`)
-            context.notificationDisabled = !context.notificationDisabled
-            console.log(`Toggle finished notificationDisabled : ${context.notificationDisabled}`)
-            console.log(event)
+            return _retrieveFavorite({
+                replyToken : event.event.replyToken,
+                client     : event.client,
+                userId     : event.event.source.userId
+            })
         }
     },
     activities : {

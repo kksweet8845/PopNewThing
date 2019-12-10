@@ -12,9 +12,24 @@ const config = {
     },
     'agent': {
         'hostname' : 'api.line.me',
-        'auth' : `Bearer ${config.line.channelAccessToken}`
+        'get_content' : 'api-data.line.me',
+        'auth' : 'Bearer <Access Token>'
+    },
+    'google' : {
+        'hostname' : 'https://ai.google',
+        'research' : "https://ai.google/research/pubs",
+    },
+    'openAI' : {
+        'hostname' : 'https://openai.com',
+        'path' : '/progress/#papers',
+        'url' : 'https://openai.com/progress/#papers'
+    },
+    'gc_storage' : {
+        'bucketName' : '',
+        'keyFilePath' : ''
     },
     'projectRoot' : ''
 }
+
 
 module.exports = config

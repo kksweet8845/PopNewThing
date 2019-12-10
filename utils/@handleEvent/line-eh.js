@@ -43,16 +43,20 @@ const textHandler = async (that, event) => {
                             .onTransition(s => console.log(`Current state : ${JSON.stringify(s.value, null, 2)}`))
                             .start(curState)
         }
-        var regex = RegExp('SEARCH [0-9]+')
-        if(regex.test(event.message.text)){
-            var [eventType, year] = event.message.text.split(' ')
+        var searchRegex = RegExp('SEARCH [0-9]+')
+        var favorRegex = RegExp('FAVORITE https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|www\.[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9]+\.[^\s]{2,}|www\.[a-zA-Z0-9]+\.[^\s]{2,}')
+        var parseT = Boolean(searchRegex.test(event.message.text) || favorRegex.test(event.message.text))
+        console.log(parseT)
+        if(parseT){
+            var [eventType, value] = event.message.text.split(' ')
         }
         service.send({
-            type: regex.test(event.message.text) ? eventType : event.message.text,
+            type: parseT ? eventType : event.message.text,
             client : that.client,
             event,
             curState : event.message.text.toLowerCase(),
-            year : regex.test(event.message.text) ? year : event.message.text,
+            year : parseT ? value : event.message.text,
+            url : parseT ? value : event.message.text
         })
         await sleep(1)
         var doc = await User.findOne({
@@ -122,28 +126,27 @@ const _followEvent = async (that, event) => {
                 replyToken : event.replyToken,
                 client : that.client
             })
-        }else{
-            const resolvedState = _getResolveState(that.machine, doc.curState)
-            let service = interpret(that.machine).start(resolvedState)
-            console.log(service.state.value)
-            if(service.state.value == 'welcome'){
-                service.send({
-                    type: 'SHORTCOME',
-                    client : that.client,
-                    event,
-                    curState : service.state
-                })
-            }
-            doc.curState = JSON.stringify(service.state)
-            await doc.save()
         }
     }catch(err){
         console.log(err)
     }
 }
 
+const _unfollowEvent = async (event) => {
+    try{
+        const res = await User.deleteOne({
+            userId : event.source.userId
+        })
+        if(res.ok){
+            console.log(`Delete user : ${event.source.userId}`)
+        }
+    }catch(err){
+        console.log(err)
+    }
+}
 
 export {
     _msgEvent,
     _followEvent,
+    _unfollowEvent,
 }

@@ -1,4 +1,4 @@
-import {assign} from 'xstate'
+import {assign, send} from 'xstate'
 
 
 const searchState = {
@@ -59,15 +59,6 @@ const searchState = {
             }
         },
         '_search' : {
-            on : {
-                'FINISH' : {
-                    target : 'initial',
-                    actions : assign({
-                        field : () => '',
-                        year : () => ''
-                    })
-                }
-            },
             entry : ['searchPaper']
         }
     }
@@ -87,9 +78,6 @@ const schema = {
                 'WELCOME' : {
                     target : 'welcome'
                 },
-                'SHORTCOME' : {
-                    target : 'entrance'
-                }
             }
         },
         'welcome' : {
@@ -97,15 +85,9 @@ const schema = {
                 'REGISTER': {
                     target : 'register',
                 },
-                'SEARCH' : {
-                    target : 'search'
-                },
                 'NO' : {
                     actions: ['infoDes']
                 },
-                'SHORTCOME' : {
-                    target :'entrance'
-                }
             },
             entry: ['greetUser'],
             meta : {
@@ -155,6 +137,7 @@ const schema = {
                     ]
                 }
             },
+            entry: ['helpInfo'],
             meta : {
                 listFunc : [
                     {
@@ -184,7 +167,8 @@ const schema = {
                             text : 'NOTE'
                         }
                     }
-                ]
+                ],
+                info: 'You can type \"LOBBY\" to enter the lobby.'
             }
         },
         'lobby' : {
@@ -195,11 +179,11 @@ const schema = {
                 'RETRIEVE' : {
                     target : 'retrieve'
                 },
-                'NOTE' : {
-                    target : 'note'
-                },
                 'LOBBY' : {
                     actions: ['listFunc']
+                },
+                'SHOWFSM' : {
+                    actions: ['showFSM']
                 }
             },
             // activities : ['listenNewThings'],
@@ -241,18 +225,23 @@ const schema = {
                     target : 'favorite'
                 },
                 'LOBBY' : {
-                    target : 'LOBBY'
+                    target : 'lobby',
+                    actions: send((context, event)=> event )
                 }
             },
             ...searchState
         },
         'favorite' : {
             on : {
-                '' : {
-                    target : 'lobby'
+                'LOBBY' : {
+                    target : 'lobby',
+                    actions : send((context, event)=> event)
+                },
+                'FAVORITE' : {
+                    actions : ['addToFavorite']
                 }
             },
-            entry : ['addToFavorite']
+            entry : send((context, event)=>event)
         },
         'retrieve' : {
             on : {
@@ -261,14 +250,6 @@ const schema = {
                 }
             },
             entry : ['retrieveFavorite']
-        },
-        'note' : {
-            on : {
-                '' : {
-                    target : 'lobby'
-                }
-            },
-            entry : ['toggleNote']
         }
     }
 }
