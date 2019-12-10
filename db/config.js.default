@@ -1,4 +1,4 @@
-config={
+const config={
     'mongodb': {
         'database': 'line bot',
         'host' : 'localhost:27017',
