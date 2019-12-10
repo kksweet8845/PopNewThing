@@ -1,3 +1,8 @@
+
+<p align="center">
+<img src="https://i.imgur.com/IKFY3BB.png" alt="Papop", width="300"/>
+</p>
+
 # PopNewThing
 
 This is a paper crawling chatbot, which crawls the paper from [google AI](https://ai.google/research/pubs/) and [open AI](https://openai.com/progress/#releases). It is implemented by [NodeJs](https://nodejs.org/en/) and [MongoDB](https://www.mongodb.com/). However, this chatbot is in free trail right now, so the push message to client will be forbiddened. It can't be deployed on the heroku, because it use the [Selenium WebDriver](https://selenium.dev/) to crawl the dynamical website, which is needed to download the corresponding webdriver to activate the browser. The workflow is implmented by [xstate](https://github.com/davidkpiano/xstate).
@@ -40,18 +45,3 @@ mongod -dbpath=./mongodb-data
 ```
 npm run product
 ```
-
-## DEMO
-
-
-
-
-
-
-
-
-
-
-
-
-
