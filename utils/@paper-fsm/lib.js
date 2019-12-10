@@ -15,6 +15,7 @@ import {
     fetch_blog,
 } from 'utils/@openAI/lib.js'
 import {Builder, By, Key, unitl} from 'selenium-webdriver'
+import chrome from 'selenium-webdriver/chrome'
 import {User} from 'projectRoot/models/User.js'
 import {Favorite} from 'projectRoot/models/Favorite.js'
 import {mongoose} from 'projectRoot/db/mongoose.js'
@@ -135,6 +136,7 @@ const _searchPaper = async (obj={
         const google_search = async () => {
             var driver = await new Builder()
                         .forBrowser('chrome')
+                        .setChromeOptions(new chrome.Options().headless())
                         .build()
             await googleSearch(driver, searchUrl)
             await setFilter(driver,'year', toArray(year))
@@ -209,6 +211,7 @@ const _chooseYear = async (obj={
         const {replyToken, client, userId, meta, year} = obj
         var driver = await new Builder()
                         .forBrowser('chrome')
+                        .setChromeOptions(new chrome.Options().headless())
                         .build()
         await googleSearch(driver, config.google.research)
         const {list_id, list_text} = await getFilterData(driver, 'year')
