@@ -45,6 +45,7 @@ $ mongod -dbpath=./mongodb-data
 
 - Set up the chrome
 ```
+$ chmod u+x ./scripts/chrome-setup.sh
 $ ./scripts/chrome-setup.sh
 ```
 
