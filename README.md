@@ -43,5 +43,9 @@ mongod -dbpath=./mongodb-data
 
 - Activate the service
 ```
-npm run product
+npm run d
 ```
+
+## QR code
+![](https://i.imgur.com/s0PR0g6.png)
+
