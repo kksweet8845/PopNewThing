@@ -137,7 +137,6 @@ const schema = {
                     ]
                 }
             },
-            entry: ['helpInfo'],
             meta : {
                 listFunc : [
                     {
