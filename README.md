@@ -29,8 +29,8 @@ $ npm install
 $ echo $PATH
 $ mv webdriver /one/of/path/webdriver
 ```
-- Set up the config file. 
-  - execute `npm run p` to create a new config.js file. 
+- Set up the config file.
+  - execute `npm run p` to create a new config.js file.
     - This file contain some property which is needed to be specified.
 
   - execute `npm run pdb` to create a new database config.js file

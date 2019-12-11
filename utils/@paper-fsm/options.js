@@ -20,10 +20,10 @@ const options = {
             return console.log('Traverse')
         },
         infoDes   : (context, event, actState) => {
-            return _infoDes(event.replyToken, event.client, actState.state.meta[`paperMachine.${actState.state.value}`])
+            return _infoDes(event.event.replyToken, event.client, actState.state.meta[`paperMachine.${actState.state.value}`])
         },
         helpInfo  : (context, event, actState) => {
-            return _helpInfo(event.replyToken, event.client, actState.state.meta[`paperMachine.${actState.state.value}`])
+            return _helpInfo(event.event.replyToken, event.client, actState.state.meta[`paperMachine.${actState.state.value}`])
         },
         tryToRegister : async (context, event, actState) => {
             if(event.client){
