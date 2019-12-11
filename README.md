@@ -27,7 +27,7 @@ $ npm install
 - Put the webdriver binary source file in directory, driver to the ENVIRONMENT PATH
 ```
 $ echo $PATH
-$ mv webdriver /one/of/path/webdriver
+$ mv webdriver /one/of/env-path/webdriver
 ```
 - Set up the config file.
   - execute `npm run p` to create a new config.js file.
@@ -38,13 +38,22 @@ $ mv webdriver /one/of/path/webdriver
 
 - Activate the mongoDB, you need to install the mongodb in your server
 ```
-mongod -dbpath=./mongodb-data
+$ mkdir history
+$ mkdir mongodb-data
+$ mongod -dbpath=./mongodb-data
+```
+
+- Set up the chrome
+```
+$ chmod u+x ./scripts/chrome-setup.sh
+$ ./scripts/chrome-setup.sh
 ```
 
 - Activate the service
 ```
-npm run d
+$ npm run d
 ```
+
 
 ## QR code
 ![](https://i.imgur.com/s0PR0g6.png)
